@@ -337,7 +337,7 @@ function Win({ title, Icon, children, className = "" }) {
             viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className={`win ${className}`}
           >
-            <div onPointerDown={(e) => dc.start(e)} className="wbar flex cursor-grab touch-none select-none items-center gap-2 border-b border-white/10 px-4 py-2.5 active:cursor-grabbing">
+            <div onPointerDown={(e) => { if (e.pointerType === "mouse") dc.start(e); }} className="wbar flex cursor-grab touch-pan-y select-none items-center gap-2 border-b border-white/10 px-4 py-2.5 active:cursor-grabbing">
               <Icon size={14} className="ta" />
               <span className="fd ta tglow text-[11px] font-bold tracking-[0.2em]"><Scr text={title} /></span>
               <button aria-label="Toggle window" onPointerDown={stop} onClick={() => setOpen(!open)} className="ml-auto text-zinc-300 hover:text-white">
