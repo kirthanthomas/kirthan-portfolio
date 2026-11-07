@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence, useDragControls, useScroll, useSpring, useTransform, useMotionValue, animate } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, useMotionValue, animate } from "framer-motion";
 import {
   Terminal, LayoutGrid, Zap, Skull, Copy, Check, Cpu, Database, Code2, Globe,
   GitBranch, Shield, Cloud, Brain, Briefcase, FolderGit2, GraduationCap, Award,
@@ -319,31 +319,28 @@ const Bar = ({ n, v }) => (
   </div>
 );
 
-/* Draggable + collapsible window. Drag by the title bar. */
+/* Fixed-position collapsible window. */
 function Win({ title, Icon, children, className = "" }) {
-  const dc = useDragControls();
   const [open, setOpen] = useState(true);
   const [shown, setShown] = useState(true);
-  const stop = (e) => e.stopPropagation();
   return (
     <>
       <AnimatePresence>
         {shown && (
           <motion.section
-            key="w" drag dragControls={dc} dragListener={false} dragMomentum={false}
-            whileDrag={{ scale: 1.02, zIndex: 30 }}
+            key="w"
             initial={{ opacity: 0, y: 90, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8, y: 40, transition: { duration: 0.3 } }}
             viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className={`win ${className}`}
           >
-            <div onPointerDown={(e) => { if (e.pointerType === "mouse") dc.start(e); }} className="wbar flex cursor-grab touch-pan-y select-none items-center gap-2 border-b border-white/10 px-4 py-2.5 active:cursor-grabbing">
+            <div className="wbar flex select-none items-center gap-2 border-b border-white/10 px-4 py-2.5">
               <Icon size={14} className="ta" />
               <span className="fd ta tglow text-[11px] font-bold tracking-[0.2em]"><Scr text={title} /></span>
-              <button aria-label="Toggle window" onPointerDown={stop} onClick={() => setOpen(!open)} className="ml-auto text-zinc-300 hover:text-white">
+              <button aria-label="Toggle window" onClick={() => setOpen(!open)} className="ml-auto text-zinc-300 hover:text-white">
                 {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </button>
-              <button aria-label="Close window" onPointerDown={stop} onClick={() => setShown(false)} className="text-zinc-300 hover:text-white"><X size={14} /></button>
+              <button aria-label="Close window" onClick={() => setShown(false)} className="text-zinc-300 hover:text-white"><X size={14} /></button>
             </div>
             <AnimatePresence initial={false}>
               {open && (
